@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Акция</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 80px;
+      background: #111;
+      color: #fff;
+    }
+
+    .price {
+      font-size: 48px;
+      margin: 20px 0;
+    }
+
+    .timer {
+      font-size: 28px;
+      margin-top: 10px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔥 Акция действует 1 час</h1>
+
+  <div class="price" id="price">190 000 ₸</div>
+  <div class="timer" id="timer"></div>
+
+<script>
+  // Время акции (Астана = Asia/Almaty)
+  const startTime = new Date("2026-05-26T13:00:00+06:00");
+  const endTime   = new Date("2026-05-26T14:00:00+06:00");
+
+  const startPrice = 190000;
+  const endPrice = 250000;
+
+  function update() {
+    const now = new Date();
+
+    if (now < startTime) {
+      document.getElementById("timer").innerText = "Акция ещё не началась";
+      document.getElementById("price").innerText = startPrice.toLocaleString() + " ₸";
+      return;
+    }
+
+    if (now > endTime) {
+      document.getElementById("timer").innerText = "Акция завершена";
+      document.getElementById("price").innerText = endPrice.toLocaleString() + " ₸";
+      return;
+    }
+
+    const totalMinutes = 60;
+    const minutesPassed = Math.floor((now - startTime) / 60000);
+
+    const price = startPrice + (minutesPassed * 1000); // +1000 ₸ в минуту
+
+    const timeLeft = endTime - now;
+    const min = Math.floor(timeLeft / 60000);
+    const sec = Math.floor((timeLeft % 60000) / 1000);
+
+    document.getElementById("price").innerText = price.toLocaleString() + " ₸";
+    document.getElementById("timer").innerText =
+      `До конца: ${min} мин ${sec} сек`;
+  }
+
+  update();
+  setInterval(update, 1000);
+</script>
+
+</body>
+</html>

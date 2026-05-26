@@ -5,7 +5,192 @@
   <title>Акция</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial, sans-serif;<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Акция Aerofit Club Vostok</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:#0f0f0f;
+      color:white;
+      font-family:Arial,sans-serif;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:20px;
+    }
+
+    .container{
+      max-width:700px;
+      width:100%;
+    }
+
+    h1{
+      font-size:52px;
+      margin-bottom:20px;
+    }
+
+    .subtitle{
+      color:#b3b3b3;
+      font-size:20px;
+      margin-bottom:50px;
+    }
+
+    .price{
+      font-size:88px;
+      font-weight:bold;
+      margin-bottom:30px;
+    }
+
+    .timer{
+      font-size:34px;
+      color:#d4d4d4;
+    }
+
+    .status{
+      margin-top:20px;
+      font-size:18px;
+      color:#8f8f8f;
+    }
+
+    @media(max-width:768px){
+      h1{
+        font-size:34px;
+      }
+
+      .price{
+        font-size:56px;
+      }
+
+      .timer{
+        font-size:26px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>🔥 Акция Aerofit Club Vostok</h1>
+
+  <div class="subtitle">
+    Цена повышается каждую минуту
+  </div>
+
+  <div class="price" id="price">
+    138 000 ₸
+  </div>
+
+  <div class="timer" id="timer">
+    Загрузка...
+  </div>
+
+  <div class="status" id="status"></div>
+
+</div>
+
+<script>
+
+  // Казахстан UTC+5
+  const startTime = new Date("2026-05-27T14:00:00+05:00");
+  const endTime   = new Date("2026-05-27T15:00:00+05:00");
+
+  const startPrice = 138000;
+  const endPrice = 198000;
+
+  const totalMinutes = 60;
+  const increasePerMinute = (endPrice - startPrice) / totalMinutes;
+
+  function updateSite(){
+
+    const now = new Date();
+
+    const timer = document.getElementById("timer");
+    const price = document.getElementById("price");
+    const status = document.getElementById("status");
+
+    // ДО СТАРТА
+    if(now < startTime){
+
+      const diff = startTime - now;
+
+      const hours = Math.floor(diff / 1000 / 60 / 60);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      timer.innerHTML =
+        `Старт через: ${hours}ч ${minutes}м ${seconds}с`;
+
+      price.innerHTML =
+        startPrice.toLocaleString('ru-RU') + " ₸";
+
+      status.innerHTML =
+        "Акция ещё не началась";
+
+      return;
+    }
+
+    // ПОСЛЕ ЗАВЕРШЕНИЯ
+    if(now >= endTime){
+
+      timer.innerHTML = "Акция завершена";
+
+      price.innerHTML =
+        endPrice.toLocaleString('ru-RU') + " ₸";
+
+      status.innerHTML =
+        "Финальная цена";
+
+      return;
+    }
+
+    // ВО ВРЕМЯ АКЦИИ
+    const passedMinutes =
+      Math.floor((now - startTime) / 1000 / 60);
+
+    const currentPrice =
+      Math.round(startPrice + (passedMinutes * increasePerMinute));
+
+    const remaining =
+      endTime - now;
+
+    const mins =
+      Math.floor(remaining / 1000 / 60);
+
+    const secs =
+      Math.floor((remaining / 1000) % 60);
+
+    price.innerHTML =
+      currentPrice.toLocaleString('ru-RU') + " ₸";
+
+    timer.innerHTML =
+      `До конца акции: ${mins}м ${secs}с`;
+
+    status.innerHTML =
+      `Цена выросла на ${(currentPrice - startPrice).toLocaleString('ru-RU')} ₸`;
+
+  }
+
+  updateSite();
+
+  setInterval(updateSite,1000);
+
+</script>
+
+</body>
+</html>
       text-align: center;
       padding-top: 80px;
       background: #111;
